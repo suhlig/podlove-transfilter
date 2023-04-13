@@ -18,7 +18,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	podloveTranscript, err := transformer.Transform(transcript)
+	podloveTranscript, err := transformer.Transform(&transcript)
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error:  Could not transform transcript from whisper to podlove: %s", err)

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func Transform(whisperTranscript whisper.Transcript) (podloveTranscript *podlove.Transcript, err error) {
+func Transform(whisperTranscript *whisper.Transcript) (podloveTranscript *podlove.Transcript, err error) {
 	podloveTranscript = &podlove.Transcript{}
 
 	for _, whisperSegment := range whisperTranscript.Segments {
