@@ -25,7 +25,10 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = json.NewEncoder(os.Stdout).Encode(podloveTranscript.Segments)
+	encoder := json.NewEncoder(os.Stdout)
+	encoder.SetIndent("", "  ")
+
+	err = encoder.Encode(podloveTranscript.Segments)
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Warning:  Could not encode podlove transcript to JSON: %s", err)
