@@ -5,7 +5,7 @@ type Transcript struct {
 }
 
 type Segment struct {
-	Start uint64 `json:"start"`
-	End   uint64 `json:"end"`
-	Text  string `json:"text"`
+	Start float64 `json:"start"`
+	End   float64 `json:"end"`
+	Text  string  `json:"text"`
 }

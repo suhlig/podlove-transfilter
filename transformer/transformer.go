@@ -25,10 +25,10 @@ func Transform(whisperTranscript whisper.Transcript) (podloveTranscript *podlove
 }
 
 func transformSegment(wrs *whisper.Segment) (pls podlove.Segment, err error) {
-	pls.Start = fmtDuration(time.Duration(wrs.Start * uint64(time.Second)))
-	pls.StartMs = wrs.Start * 1000
-	pls.End = fmtDuration(time.Duration(wrs.End * uint64(time.Second)))
-	pls.EndMs = wrs.End * 1000
+	pls.Start = fmtDuration(time.Duration(uint64(wrs.Start) * uint64(time.Second)))
+	pls.StartMs = uint64(wrs.Start) * 1000
+	pls.End = fmtDuration(time.Duration(uint64(wrs.End) * uint64(time.Second)))
+	pls.EndMs = uint64(wrs.End) * 1000
 	pls.Text = strings.Trim(wrs.Text, " ")
 
 	return pls, nil
