@@ -2,8 +2,8 @@ package transformer
 
 import (
 	"fmt"
-	"main/podlove"
-	"main/whisper"
+	"podlove-transfilter/podlove"
+	"podlove-transfilter/whisper"
 	"strings"
 	"time"
 )

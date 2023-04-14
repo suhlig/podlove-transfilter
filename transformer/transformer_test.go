@@ -1,9 +1,9 @@
 package transformer_test
 
 import (
-	"main/podlove"
-	"main/transformer"
-	"main/whisper"
+	"podlove-transfilter/podlove"
+	"podlove-transfilter/transformer"
+	"podlove-transfilter/whisper"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
