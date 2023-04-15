@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"podlove-transfilter/transformer"
 	"podlove-transfilter/whisper"
+	"time"
 
 	flag "github.com/spf13/pflag"
 )
@@ -19,6 +20,8 @@ var date = "UNKNOWN"
 func main() {
 	helpWanted := flag.BoolP("help", "h", false, "provides help")
 	versionWanted := flag.BoolP("version", "V", false, "prints the version and exits")
+	offset := flag.DurationP("offset", "o", time.Duration(0), "offset all podlove timestamps against the whisper timestamps by this amount")
+
 	flag.Parse()
 
 	if helpWanted != nil && *helpWanted {
@@ -50,7 +53,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	podloveTranscript, err := transformer.Transform(&transcript)
+	podloveTranscript, err := transformer.Transform(&transcript, transformer.Options{
+		Offset: *offset,
+	})
 
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error:  Could not transform transcript from whisper to podlove: %s", err)

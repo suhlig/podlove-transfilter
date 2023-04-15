@@ -8,11 +8,19 @@ import (
 	"time"
 )
 
-func Transform(whisperTranscript *whisper.Transcript) (podloveTranscript *podlove.Transcript, err error) {
+type Options struct {
+	Offset time.Duration
+}
+
+func Transform(whisperTranscript *whisper.Transcript, options Options) (podloveTranscript *podlove.Transcript, err error) {
 	podloveTranscript = &podlove.Transcript{}
 
 	for _, whisperSegment := range whisperTranscript.Segments {
-		podloveSegment, err := transformSegment(whisperSegment)
+		if time.Duration(whisperSegment.Start) < options.Offset {
+			continue
+		}
+
+		podloveSegment, err := transformSegment(whisperSegment, options)
 
 		if err != nil {
 			return nil, err
@@ -24,11 +32,15 @@ func Transform(whisperTranscript *whisper.Transcript) (podloveTranscript *podlov
 	return
 }
 
-func transformSegment(wrs *whisper.Segment) (pls podlove.Segment, err error) {
-	pls.Start = fmtDuration(time.Duration(wrs.Start * float64(time.Second)))
-	pls.StartMs = uint64(wrs.Start * 1000)
-	pls.End = fmtDuration(time.Duration(wrs.End * float64(time.Second)))
-	pls.EndMs = uint64(wrs.End * 1000)
+func transformSegment(wrs *whisper.Segment, options Options) (pls podlove.Segment, err error) {
+	startWithOffset := time.Duration(wrs.Start) - options.Offset
+	pls.Start = fmtDuration(startWithOffset)
+	pls.StartMs = uint64(startWithOffset / time.Millisecond)
+
+	endWithOffset := time.Duration(wrs.End) - options.Offset
+	pls.End = fmtDuration(endWithOffset)
+	pls.EndMs = uint64(endWithOffset / time.Millisecond)
+
 	pls.Text = strings.Trim(wrs.Text, " ")
 
 	return pls, nil
