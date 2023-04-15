@@ -4,14 +4,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"podlove-transfilter/transformer"
 	"podlove-transfilter/whisper"
 
 	flag "github.com/spf13/pflag"
 )
 
+// ldflags will be set by goreleaser
+var version = "vDEV"
+var commit = "NONE"
+var date = "UNKNOWN"
+
 func main() {
 	helpWanted := flag.BoolP("help", "h", false, "provides help")
+	versionWanted := flag.BoolP("version", "V", false, "prints the version and exits")
 	flag.Parse()
 
 	if helpWanted != nil && *helpWanted {
@@ -26,6 +33,11 @@ func main() {
 		fmt.Fprintf(os.Stderr, "  %s < whisper.json | tee podlove-transcript.json\n", os.Args[0])
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, "will read whisper.json and print the podlove transcript as well as write it to podlove-transcript.json.")
+		os.Exit(0)
+	}
+
+	if versionWanted != nil && *versionWanted {
+		fmt.Printf("%s %s (%s), built on %s\n", filepath.Base(os.Args[0]), version, commit, date)
 		os.Exit(0)
 	}
 
